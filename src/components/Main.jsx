@@ -1,22 +1,22 @@
 import React from "react";
+import IngredientsList from "./components/IngredientsList"
+import Recipe from "./components/Recipe"
 
 function Main() {
-  const [ingredients, setIngredients] = React.useState([]);
-  const ingredientListItems = ingredients.map((ingredient) => (
-    <li>{ingredient}</li>
-  ));
+  const [ingredients, setIngredients] = React.useState(
+    ["chicken", "all the main spices", "corn", "heavy cream", "pasta"]
+  )
+
+  const [recipe, setRecipe] = React.useState("")
+
+  async function getRecipe() {
+    const recipeMarkdown = await getRecipeFromChefClaude(ingredients)
+    setRecipe(recipeMarkdown)
+  }
 
   function addIngredient(formData) {
     const newIngredient = formData.get("ingredient");
-    setIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
-  }
-
-  function hasIngredients() {
-    if(ingredients.length > 0 ) {
-        return true
-    } else {
-        return false
-    }
+    setIngredients(prevIngredients => [...prevIngredients, newIngredient]);
   }
 
   return (
@@ -30,17 +30,8 @@ function Main() {
         />
         <button>Add ingredient</button>
       </form>
-      {hasIngredients() && <section>
-        <h2>Ingredients on hand:</h2>
-        <ul className="ingredients-list" aria-live="polite">{ingredientsListItems}</ul>
-        <div className="get-recipe-container">
-            <div>
-              <h3>Ready for a recipe?</h3>
-              <p>Generate a recipe from your list of ingredients.</p>
-            </div>
-            <button>Get a recipe</button>
-        </div>
-      </section>}
+      {ingredients.length > 0 && <IngredientsList ingredients={ingredients} getRecipe={getRecipe} />}
+      {recipe && <Recipe recipe={recipe} />}
     </main>
   );
 }
