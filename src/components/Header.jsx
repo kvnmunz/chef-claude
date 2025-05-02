@@ -1,6 +1,6 @@
 import chefIcon from "../public/chef-claude-icon.png"
 
-function Header() {
+export default function Header() {
     return (
         <header>
             <img src={chefIcon} alt="Chef Claude" />
@@ -9,4 +9,3 @@ function Header() {
     )
 }
 
-export default Header

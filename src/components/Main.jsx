@@ -1,7 +1,8 @@
 import React from "react";
 import IngredientsList from "./IngredientsList";
 import ClaudeRecipe from "./Recipe";
-import { getRecipeFromChefClaude } from "../ai";
+import { getRecipeFromChefClaude, getRecipeSuggestions } from "../ai";
+import RecipeSuggestions from "./RecipeSuggestions";
 
 function Main() {
   const [ingredients, setIngredients] = React.useState(
@@ -13,6 +14,13 @@ function Main() {
   async function getRecipe() {
     const recipeMarkdown = await getRecipeFromChefClaude(ingredients)
     setRecipe(recipeMarkdown)
+  }
+
+  const [suggestions, setSuggestions] = React.useState({})
+
+  async function getSuggestions() {
+    const recipeSuggestions = await getRecipeSuggestions(ingredients)
+    setSuggestions(recipeSuggestions)
   }
 
   function addIngredient(formData) {
@@ -31,7 +39,8 @@ function Main() {
         />
         <button>Add ingredient</button>
       </form>
-      {ingredients.length > 0 && <IngredientsList ingredients={ingredients} getRecipe={getRecipe} />}
+      {ingredients.length > 3 && <IngredientsList ingredients={ingredients} getSuggestions={getSuggestions} />}
+      {suggestions.length > 1 && <RecipeSuggestions suggestions={suggestions} getRecipe={getRecipe} />}
       {recipe && <ClaudeRecipe recipe={recipe} />}
     </main>
   );
