@@ -1,6 +1,7 @@
 import React from "react";
-import IngredientsList from "./components/IngredientsList"
-import Recipe from "./components/Recipe"
+import IngredientsList from "./IngredientsList";
+import ClaudeRecipe from "./Recipe";
+import { getRecipeFromChefClaude } from "../ai";
 
 function Main() {
   const [ingredients, setIngredients] = React.useState(
@@ -31,7 +32,7 @@ function Main() {
         <button>Add ingredient</button>
       </form>
       {ingredients.length > 0 && <IngredientsList ingredients={ingredients} getRecipe={getRecipe} />}
-      {recipe && <Recipe recipe={recipe} />}
+      {recipe && <ClaudeRecipe recipe={recipe} />}
     </main>
   );
 }
